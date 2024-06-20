@@ -3,7 +3,7 @@ import { Video } from '@/utils/types';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { getYTId } from '@/utils/helpers';
+import { getYTId, isYT } from '@/utils/helpers';
 import CommentsSection from './CommentsSection';
 const VideoCard: React.FC<{video: Video}> = ({video}) => {
   const router = useRouter();
@@ -20,27 +20,41 @@ const VideoCard: React.FC<{video: Video}> = ({video}) => {
       }
     }
     console.log('v', video.video_url)
+    if (!isYT(video.video_url)) {
+      console.log('not fetch')
+      setThumbnail('no')
+      return;
+    }
     fetchThumbnail(getYTId(video.video_url));
 
   }, [video.video_url])
 
   const handleCardClicked = () => {
-    router.push(`/video/${video.id}`)
+    router.push(`/home/video/${video.id}`)
   }
   return (
     <div
-      className="video-card p-4 bg-white shadow-lg rounded-lg flex flex-col items-center"
+      className="video-card card-hover"
       onClick = {handleCardClicked}
     >
+      <div className=' flex flex-col items-center w-full p-2'>
+        {!thumbnail ? (
 
-      {thumbnail ? (
-        <Image src={thumbnail} alt={`Thumbnail of ${video.title}`} className="rounded h-auto" width={200} height={100}/>
-      ) : (
-        <div className="w-full h-56 bg-gray-300 flex items-center justify-center">
-          <p>Loading thumbnail...</p>
-        </div>
-      )}
-      <h2 className="text-lg font-bold mb-2">{video.title}</h2>
+            <p>Loading thumbnail...</p>
+
+        ) : thumbnail === 'no' ?
+        (
+          <div className='rounded w-full aspect-[4/3]'>
+            <iframe src={video.video_url} className='rounded w-full h-full' width={200} height={100}/>
+          </div>
+        )
+        :
+        (
+          <Image src={thumbnail} alt={`Thumbnail of ${video.title}`} className="rounded w-full aspect-[4/3]" width={200} height={100}/>
+        ) }
+        <h2 className="text-lg font-bold">{video.title}</h2>
+        <p className='w-full max-h-6 mb-2'>{video.description.slice(0, 60)}{video.description.length > 70 && '...'}</p>
+      </div>
     </div>
   )
 }

@@ -1,13 +1,13 @@
-import { useAppDispatch, useAppSelector } from "@/store/store";
+import { useAppDispatch } from "@/store/store";
 import { toggleModal } from "@/store/modalSlice";
 import Modal from "./Modal";
 import { fetchHandler } from "@/utils/fetchHandler";
 import { addVideo } from "@/store/videoSlice";
-import { validateURL } from "@/utils/helpers";
+import { getCookies, validateURL } from "@/utils/helpers";
 
 const AddVideoForm: React.FC=() => {
   const dispatch = useAppDispatch();
-  const user = useAppSelector(state => state.user.userId);
+  const userId= getCookies('userId');
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
@@ -17,7 +17,7 @@ const AddVideoForm: React.FC=() => {
       alert('video url not right');
       return;
     }
-    const body = {user_id: user, ...formValues};
+    const body = {user_id: userId, ...formValues};
     try {
       const res = await fetchHandler('', {method:'POST', body});
       if (res) {

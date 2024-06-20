@@ -42,7 +42,7 @@ const AddCommentForm:React.FC<{video_id:string}> = ({video_id}) => {
           placeholder="Add a comment..."
           onClick={() => toggleBtn(false)}
           onBlur={() => toggleBtn(content.length > 0 ? false : true)}
-          className="pb-0 font-light border-x-0 border-t-0 rounded-none shadow-none border-b-2 w-full focus:border-b-black focus:outline-none my-2 focus:ring-0"
+          className="dark:bg-dark-bg pb-0 font-light border-x-0 border-t-0 rounded-none shadow-none border-b-2 w-full focus:border-b-black dark:focus:border-b-white focus:outline-none my-2 focus:ring-0"
         />
         <div className={`w-full text-right gap-3 justify-end ${hiddenBtn ? "hidden" : 'flex'}`}>
           <button

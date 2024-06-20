@@ -16,11 +16,15 @@ export const validateURL = (url: FormDataEntryValue) => {
   );
   return !!pattern.test(url.toString());
 };
-
+export const isYT = (url:string) => {
+  return !url.match('youtu') ? false : true
+}
 export const getYTId = (url:string) => {
+
   const urlArr = url.split('/');
   const idStr = urlArr[urlArr.length - 1];
   const idArr = idStr.split('=');
   return idArr[idArr.length - 1];
+
 
 }

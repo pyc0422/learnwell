@@ -21,13 +21,13 @@ const CommentsSection: React.FC<{videoId?:string,commentsNum: number}> = ({
 
   if (!videoId) return;
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-3">
       <h3>{commentsNum > 0 ? `${commentsNum} Comments` : 'No Comments yet'}</h3>
       <AddCommentForm video_id={videoId}/>
-      <div className="divider-y gap-3">
+      <div className="flex flex-col divide-y">
       {!comments ? <Loading /> :
       comments.slice(0,3).map((comment, i) =>
-        <div key={`${comment.video_id}-${i+1}`} className="flex flex-col justify-start items-start">
+        <div key={`${comment.video_id}-${i+1}`} className="flex flex-col justify-start items-start py-2">
           <div className="flex gap-3 justify-start items-center">
             <b>@{comment.user_id}</b>
             <div>{formatDistance(new Date(comment.created_at), new Date())}</div>

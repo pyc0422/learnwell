@@ -22,6 +22,10 @@ export const fetchHandler = async <T>(
       'Content-Type':'application/json',
       ...options.headers
     }
+  } else {
+    requestOptions.headers = {
+      'accept':'application/json'
+    }
   }
 
   if(options.body) {

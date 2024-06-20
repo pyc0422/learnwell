@@ -26,13 +26,13 @@ body {
     rgb(var(--background-start-rgb));
 }
 */
-
+body {
+  @apply bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark;
+}
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
-
-
   .light-btn {
     @apply bg-white text-gray-700
   }
@@ -63,4 +63,10 @@ h3 {
 }
 .input-wrap{
   @apply flex flex-col gap-1
+}
+.video-card{
+  @apply w-72 h-72 p-4 bg-gray-200 dark:bg-gray-400/50 shadow-lg rounded-lg cursor-pointer;
+}
+.card-hover{
+  @apply hover:ring-2 hover:ring-green dark:hover:ring-orange
 }
