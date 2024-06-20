@@ -32,7 +32,7 @@ const AddCommentForm:React.FC<{video_id:string}> = ({video_id}) => {
   return (
     <form onSubmit={handleSubmit} className="flex gap-3 items-center w-full" onReset={() => setContent('')}>
 
-        <div className="min-w-max capitalize font-semibold">{user_id}</div>
+      <div className="min-w-max capitalize font-semibold">{user_id}</div>
 
       <div className="w-full">
         <input
