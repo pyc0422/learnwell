@@ -26,7 +26,7 @@ const CommentsSection: React.FC<{videoId?:string,commentsNum: number}> = ({
       <AddCommentForm video_id={videoId}/>
       <div className="flex flex-col divide-y">
       {!comments ? <Loading /> :
-      comments.slice(0,3).map((comment, i) =>
+      comments.map((comment, i) =>
         <div key={`${comment.video_id}-${i+1}`} className="flex flex-col justify-start items-start py-2">
           <div className="flex gap-3 justify-start items-center">
             <b>@{comment.user_id}</b>
@@ -36,7 +36,7 @@ const CommentsSection: React.FC<{videoId?:string,commentsNum: number}> = ({
         </div>
       )
       }
-      {(comments && comments.length > 3) && <p>More...</p> }
+
       </div>
     </div>
   )

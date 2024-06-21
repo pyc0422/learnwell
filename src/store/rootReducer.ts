@@ -1,9 +1,9 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import userReducer from './userSlice';
+import commentReducer from './commentSlice';
 import videoReducer from './videoSlice';
 import modalReducer from './modalSlice';
 const rootReducer = combineReducers({
-  user: userReducer,
+  comment: commentReducer,
   video:videoReducer,
   modal: modalReducer,
 });

@@ -1,59 +1,64 @@
 'use client';
 import { Video } from '@/utils/types';
-import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { getYTId, isYT } from '@/utils/helpers';
-import CommentsSection from './CommentsSection';
+import { embedUrl, isYT } from '@/utils/helpers';
+import { useAppDispatch } from '@/store/store';
+import { toggleModal } from '@/store/modalSlice';
+import { setCurVideo } from '@/store/videoSlice';
 const VideoCard: React.FC<{video: Video}> = ({video}) => {
   const router = useRouter();
-  const [thumbnail, setThumbnail] = useState<string | null>(null);
+  const dispatch = useAppDispatch()
+  const [displayUrl, setUrl] = useState<string | null>(null);
+  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
-    const fetchThumbnail = async(id:string) => {
-      console.log('fetchThumbnail id:', id);
-      const res = await fetch(`api/fetchYT/${id}`)
-      if (res) {
-        const thumbnailUrl = await res.json();
-        console.log('thumbnailUrl', thumbnailUrl);
-        setThumbnail(thumbnailUrl);
-      }
-    }
-    console.log('v', video.video_url)
     if (!isYT(video.video_url)) {
-      console.log('not fetch')
-      setThumbnail('no')
+      setUrl(video.video_url)
       return;
     }
-    fetchThumbnail(getYTId(video.video_url));
+    setUrl(embedUrl(video.video_url))
 
   }, [video.video_url])
 
   const handleCardClicked = () => {
     router.push(`/home/video/${video.id}`)
   }
+
+  const handleEditBtnClicked = () => {
+    dispatch(setCurVideo(video))
+    dispatch(toggleModal(true))
+  }
   return (
     <div
-      className="video-card card-hover"
-      onClick = {handleCardClicked}
+      className="video-card card-hover overflow-hidden max-w-full"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
-      <div className=' flex flex-col items-center w-full p-2'>
-        {!thumbnail ? (
-
-            <p>Loading thumbnail...</p>
-
-        ) : thumbnail === 'no' ?
+      <div className=' flex flex-col items-center justify-center w-full p-2' >
+        {!displayUrl ? (
+            <p>Loading...</p>
+        ) :
         (
-          <div className='rounded w-full aspect-[4/3]'>
-            <iframe src={video.video_url} className='rounded w-full h-full' width={200} height={100}/>
+          <div className='rounded w-full aspect-[4/3]' onClick = {handleCardClicked}>
+            <iframe src={displayUrl} allowFullScreen loading="lazy" className='rounded w-full h-full' width={200} height={100}/>
           </div>
-        )
-        :
-        (
-          <Image src={thumbnail} alt={`Thumbnail of ${video.title}`} className="rounded w-full aspect-[4/3]" width={200} height={100}/>
-        ) }
-        <h2 className="text-lg font-bold">{video.title}</h2>
-        <p className='w-full max-h-6 mb-2'>{video.description.slice(0, 60)}{video.description.length > 70 && '...'}</p>
+        )}
+        <div className='w-full flex justify-between items-center'>
+        <h2 className="text-lg font-bold" onClick = {handleCardClicked}> {video.title}</h2>
+        {isHovered && (
+            <button
+              className="bg-opacity-50 bg-blue px-2 rounded-md"
+              onClick={handleEditBtnClicked}
+            >
+              Edit
+            </button>
+          )}
+        </div>
+
+        <div className='w-full text-wrap text-sm' onClick = {handleCardClicked}>
+          {video.description.length > 70 ? `${video.description.slice(0,70)}...` : `${video.description}`}
+        </div>
       </div>
     </div>
   )

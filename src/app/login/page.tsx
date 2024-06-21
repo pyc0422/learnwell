@@ -1,7 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import { useAppDispatch } from '@/store/store';
-import { setUserId } from '@/store/userSlice';
 import { getFormInput } from '@/utils/helpers';
 const Auth:React.FC = () => {
   const router = useRouter();
@@ -12,7 +11,6 @@ const Auth:React.FC = () => {
     const first = getFormInput(form, 'first');
     const last = getFormInput(form, 'last');
     document.cookie = `userId=${first}-${last}`
-    dispatch(setUserId(`${first}-${last}`))
     router.push('/home');
   }
   return (

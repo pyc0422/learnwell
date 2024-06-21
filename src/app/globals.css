@@ -43,6 +43,9 @@ body {
 button {
   @apply border rounded hover:opacity-75 uppercase font-semibold
 }
+.fs-btn {
+  @apply px-4 py-2 bg-gray-300 rounded dark:bg-gray-700
+}
 .green-btn {
   @apply bg-green border text-white px-8 py-1
 }
@@ -65,7 +68,7 @@ h3 {
   @apply flex flex-col gap-1
 }
 .video-card{
-  @apply w-72 h-72 p-4 bg-gray-200 dark:bg-gray-400/50 shadow-lg rounded-lg cursor-pointer;
+  @apply w-72 h-80 p-4 bg-gray-200 dark:bg-gray-400/50 shadow-lg rounded-lg cursor-pointer;
 }
 .card-hover{
   @apply hover:ring-2 hover:ring-green dark:hover:ring-orange

@@ -1,15 +1,14 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import { Video } from '@/utils/types';
+import { NewVideo, Video } from '@/utils/types';
 
 type CurrentType = Video & {YTid?:string}
 interface VideoState {
   videos:Video[] | null,
-  current: CurrentType | null
+  curVideo?: Video | null
 }
 
 const initialState: VideoState = {
   videos:[],
-  current:null
 }
 
 const videoSlice = createSlice({
@@ -24,11 +23,16 @@ const videoSlice = createSlice({
       updateState.push(action.payload);
       state.videos = updateState;
     },
-    setCurrent:(state, action:PayloadAction<CurrentType | null>) => {
-      state.current = action.payload;
+    updateVideo:(state, action:PayloadAction<Video>) => {
+      let updateVideos = state.videos ? [...state.videos] : [];
+      updateVideos.map(v => v.id === action.payload.id ? action.payload : v);
+      state.videos = updateVideos;
+    },
+    setCurVideo: (state, action: PayloadAction<Video>) => {
+      state.curVideo = action.payload;
     }
   },
 });
 
-export const {setVideos, addVideo, setCurrent} = videoSlice.actions;
+export const {setVideos, addVideo, updateVideo, setCurVideo} = videoSlice.actions;
 export default videoSlice.reducer;

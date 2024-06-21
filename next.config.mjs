@@ -14,8 +14,15 @@ const nextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol:'https',
+        hostname:'www.facebook.com',
+        port:'',
+        pathname:'/**'
+      }
     ]
-  }
+  },
+
 };
 
 export default nextConfig;

@@ -20,7 +20,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <AppProvider>
           <Header />
-          <main className="h-screen w-screen">
+          <main className="h-screen w-screen pb-8">
             {children}
           </main>
         </AppProvider>

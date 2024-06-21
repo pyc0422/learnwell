@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
   try {
 
     const video = await fetchHandler(`?user_id=${userId?.value}`);
-    console.log('v', video);
+    console.log('v', video.videos.length);
     return Response.json(video);
   } catch(error) {
     console.error('Error fetching all videos: ', error);

@@ -1,4 +1,5 @@
 export type NewVideo = {
+  user_id?:string
   title: string;
   description: string;
   video_url: string;
@@ -19,5 +20,4 @@ NewVideo & {
   id:string,
   created_at:string,
   num_comments:number,
-  user_id:string,
 }

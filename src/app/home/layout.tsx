@@ -9,10 +9,11 @@ export default function VideoPageLayout({
   children: React.ReactNode;
 }>) {
   const isOpen = useAppSelector(state => state.modal.isOpen)
+  const curVideo = useAppSelector(state => state.video.curVideo);
   return (
     <>
       {children}
-      {isOpen && <AddVideoForm />}
+      {isOpen && <AddVideoForm video={curVideo ? curVideo : undefined} />}
     </>
 
 

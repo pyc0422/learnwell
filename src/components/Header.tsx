@@ -19,7 +19,7 @@ const Header:React.FC = () => {
   }
   return (
     <nav className="flex justify-between gap-5 h-16 px-16 w-screen content-center items-center border-bottom shadow-lg">
-      <Link href={'/'}><Image src={FullLogo} alt="Learn well logo" className="w-auto p-2" /></Link>
+      <a href={'/'}><Image src={FullLogo} priority alt="Learn well logo" className="w-auto md:p-2" /></a>
       <div className="flex gap-5 items-center">
        <button
           onClick={() => toggleMenu(!memuOpen)}

@@ -9,7 +9,6 @@ const modalSlice = createSlice({
   initialState,
   reducers: {
     toggleModal: (state, action:PayloadAction<boolean>) => {
-      ('in modale reducers', state, action.payload)
       state.isOpen = action.payload;
     },
   },
