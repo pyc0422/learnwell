@@ -17,12 +17,12 @@ export const fetchHandler = async <T>(
 
   const requestOptions: RequestInit = {
     method: options.method || 'GET',
+    headers:  {
+      'Accept':'application/json',
+      ...options.headers
+    }
   }
 
-  requestOptions.headers = {
-    'Accept':'application/json',
-    ...options.headers
-  }
   if (requestOptions.method !== 'GET') {
     requestOptions.headers = {
       'Content-Type':'application/json',
@@ -30,7 +30,6 @@ export const fetchHandler = async <T>(
     }
   }
 
-  console.log(requestOptions.headers)
   if(options.body) {
     requestOptions.body = JSON.stringify(options.body);
   }

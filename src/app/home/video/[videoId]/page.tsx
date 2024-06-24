@@ -1,5 +1,5 @@
 'use client';
-import {Suspense, useEffect, useState, useRef} from 'react';
+import React, {Suspense, useEffect, useState, useRef} from 'react';
 import Loading from '@/components/Loading';
 import CommentsSection from '@/components/CommentsSection';
 import {Video} from '@/utils/types';
@@ -7,7 +7,7 @@ import { embedUrl, getYTId, isYT } from '@/utils/helpers';
 import { fetchHandler } from '@/utils/fetchHandler';
 import { formatDistance } from "date-fns";
 import ControlBtns from '@/components/ControlBtns';
-
+import ReactPlayer from 'react-player';
 const VideoPage: React.FC<{params: {videoId: string}}> = ({params}) => {
   const {videoId} = params;
   const [video, setVideo] = useState<Video | null>(null);
@@ -17,7 +17,7 @@ const VideoPage: React.FC<{params: {videoId: string}}> = ({params}) => {
   const [playbackRate, setPlaybackRate] = useState(1);
   const [volume, setVolume] = useState(50);
   const [player, setPlayer] = useState<any>(null);
-  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const iframeRef = useRef(null);
   useEffect(() =>{
     async function fetchVideo() {
       const res = await fetchHandler(`/single?video_id=${videoId}`)
@@ -48,29 +48,14 @@ const VideoPage: React.FC<{params: {videoId: string}}> = ({params}) => {
     }
   }, [fullScreen])
 
-  const changePlaybackRate = (rate: number) => {
-    if (iframeRef.current) {
-      iframeRef.current.contentWindow?.postMessage({
-        event: 'command',
-        func: 'setPlaybackRate',
-        args: [rate]
-      }, '*');
-      setPlaybackRate(rate);
-    }
-  };
+  // const changePlaybackRate = (rate: number) => {
+  //     setPlaybackRate(rate);
+  // };
 
-  const changeVolume = (vol: number) => {
-    if (iframeRef.current) {
-      console.log(iframeRef.current)
-      iframeRef.current.contentWindow?.postMessage({
-        event: 'command',
-        func: 'setVolume',
-        args: [vol]
-      }, '*');
-      console.log('change vol', vol)
-      setVolume(vol);
-    }
-  };
+  // const changeVolume = (vol: number) => {
+  //   setVolume(vol);
+  // };
+
   if (!video) return <Loading />;
 
   return (
@@ -78,22 +63,23 @@ const VideoPage: React.FC<{params: {videoId: string}}> = ({params}) => {
       <button className="bg-blue text-white my-2 py-1 w-full" onClick={() => toggleFullScreen(true)}>Watch Fullscreen</button>
       <div ref={divRef} className='w-full aspect-video card-hover hover:ring-4 rounded-lg'>
         <Suspense fallback={<p>Loading video...</p>} >
-        <iframe
-         ref={iframeRef}
-         src={isYT(video.video_url) ? embedUrl(video.video_url) : video.video_url}
-         allowFullScreen
-         loading="lazy"
-         className='rounded-lg w-full h-full min-h-max'
-        />
+          <ReactPlayer
+          ref={iframeRef}
+          url={video.video_url}
+          width='100%'
+          height='100%'
+          playbackRate={playbackRate}
+          volume={volume}
+          />
         </Suspense>
         {fullScreen &&
           <ControlBtns
            fullScreen={fullScreen}
            toggleFullScreen={toggleFullScreen}
            volume={volume}
-           changeVolume = {changeVolume}
+           changeVolume = {setVolume}
            playbackRate = {playbackRate}
-           changePlaybackRate = {changePlaybackRate}
+           changePlaybackRate = {setPlaybackRate}
           />}
       </div>
       <div className='flex grow-0 justify-start flex-col w-full'>

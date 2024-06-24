@@ -15,29 +15,24 @@ const ControlBtns: React.FC<ControlProps> = ({
   return (
     <div className="absolute bottom-2 right-2 p-2 flex gap-2 mt-2">
       <button
-        onClick={() => changePlaybackRate(0.5)}
+        onClick={() => changePlaybackRate(playbackRate - 0.25)}
         className="fs-btn"
       >
-        0.5x
+        Speed Down
       </button>
       <button
-        onClick={() => changePlaybackRate(1)}
+        onClick={ () => changePlaybackRate(1)}
         className="fs-btn"
       >
-        1x
+        Normal
       </button>
       <button
-        onClick={() => changePlaybackRate(1.5)}
+        onClick={ () => changePlaybackRate(playbackRate + 0.25)}
         className="fs-btn"
       >
-        1.5x
+        Speed Up
       </button>
-      <button
-        onClick={() => changePlaybackRate(2)}
-        className="fs-btn"
-      >
-        2x
-      </button>
+
       <input
         type="range"
         min="0"

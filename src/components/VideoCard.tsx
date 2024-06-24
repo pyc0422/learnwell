@@ -6,6 +6,8 @@ import { embedUrl, isYT } from '@/utils/helpers';
 import { useAppDispatch } from '@/store/store';
 import { toggleModal } from '@/store/modalSlice';
 import { setCurVideo } from '@/store/videoSlice';
+import ReactPlayer from 'react-player';
+
 const VideoCard: React.FC<{video: Video}> = ({video}) => {
   const router = useRouter();
   const dispatch = useAppDispatch()
@@ -35,29 +37,41 @@ const VideoCard: React.FC<{video: Video}> = ({video}) => {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className=' flex flex-col items-center justify-center w-full p-2' >
+      {/* <div className=' flex flex-col items-center justify-center w-full p-2' > */}
+      <div className='relative pt-[56%] h-full w-full overflow-hidden'>
         {!displayUrl ? (
             <p>Loading...</p>
         ) :
         (
-          <div className='rounded w-full aspect-[4/3]' onClick = {handleCardClicked}>
-            <iframe src={displayUrl} allowFullScreen loading="lazy" className='rounded w-full h-full' width={200} height={100}/>
+          <div className='rounded w-full aspect-[4/3] h-1/2' onClick = {handleCardClicked}>
+            {/* <iframe src={displayUrl} allowFullScreen loading="lazy" className='rounded w-full h-full' width={200} height={100}/> */}
+            <ReactPlayer
+            url={video.video_url}
+            allowFullScreen
+            width='100%'
+            height='auto'
+            style={{overflow:'hidden', position:'absolute', top:0, left:0}}
+            controls={false}
+            ></ReactPlayer>
           </div>
         )}
-        <div className='w-full flex justify-between items-center'>
-        <h2 className="text-lg font-bold" onClick = {handleCardClicked}> {video.title}</h2>
-        {isHovered && (
-            <button
-              className="bg-opacity-50 bg-blue px-2 rounded-md"
-              onClick={handleEditBtnClicked}
-            >
-              Edit
-            </button>
-          )}
-        </div>
+        <div className="w-full rounded-top h-1/2 mt-1 absolute bottom-0 left-0 right-0 bg-white bg-opacity-50 p-2">
 
-        <div className='w-full text-wrap text-sm' onClick = {handleCardClicked}>
-          {video.description.length > 70 ? `${video.description.slice(0,70)}...` : `${video.description}`}
+          <div className=' flex justify-between items-center'>
+            <h2 className="text-lg font-bold" onClick = {handleCardClicked}> {video.title}</h2>
+            {isHovered && (
+              <button
+                className="bg-opacity-50 bg-blue px-2 rounded-md"
+                onClick={handleEditBtnClicked}
+              >
+                Edit
+              </button>
+            )}
+          </div>
+
+          <div className='w-full text-wrap text-sm' onClick = {handleCardClicked}>
+            {video.description.length > 70 ? `${video.description.slice(0,70)}...` : `${video.description}`}
+          </div>
         </div>
       </div>
     </div>
