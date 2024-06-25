@@ -21,3 +21,10 @@ NewVideo & {
   created_at:string,
   num_comments:number,
 }
+
+
+export interface AlertType {
+  title:string,
+  text:string,
+  type:'success' |'warning'|'info'|'error'|''
+}

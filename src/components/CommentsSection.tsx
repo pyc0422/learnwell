@@ -4,15 +4,20 @@ import { Comments } from "@/utils/types"
 import AddCommentForm from './AddCommentForm';
 import Loading from "./Loading"
 import { formatDistance } from "date-fns";
+import { useAppDispatch, useAppSelector } from "@/store/store";
+import { setComment } from "@/store/commentSlice";
 const CommentsSection: React.FC<{videoId?:string,commentsNum: number}> = ({
   videoId, commentsNum}) => {
-  const [comments, setComments] = useState<Comments[] | null>(null)
-
+  //const [comments, setComments] = useState<Comments[] | null>(null)
+  const dispatch = useAppDispatch();
+  const comments = useAppSelector(state => state.comment.comments)
+  console.log('comments', comments)
   useEffect(() => {
     const getComments = async () => {
       const res = await fetchHandler(`/comments?video_id=${videoId}`)
       if (res) {
-        setComments(res.comments);
+        dispatch(setComment(res.comments));
+        //setComments(res.comments);
       }
     }
     getComments();

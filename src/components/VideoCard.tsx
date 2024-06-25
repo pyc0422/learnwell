@@ -11,17 +11,17 @@ import ReactPlayer from 'react-player';
 const VideoCard: React.FC<{video: Video}> = ({video}) => {
   const router = useRouter();
   const dispatch = useAppDispatch()
-  const [displayUrl, setUrl] = useState<string | null>(null);
+  //const [displayUrl, setUrl] = useState<string | null>(null);
   const [isHovered, setIsHovered] = useState(false);
 
-  useEffect(() => {
-    if (!isYT(video.video_url)) {
-      setUrl(video.video_url)
-      return;
-    }
-    setUrl(embedUrl(video.video_url))
+  // useEffect(() => {
+  //   if (!isYT(video.video_url)) {
+  //     setUrl(video.video_url)
+  //     return;
+  //   }
+  //   setUrl(embedUrl(video.video_url))
 
-  }, [video.video_url])
+  // }, [video.video_url])
 
   const handleCardClicked = () => {
     router.push(`/home/video/${video.id}`)
@@ -39,7 +39,7 @@ const VideoCard: React.FC<{video: Video}> = ({video}) => {
     >
       {/* <div className=' flex flex-col items-center justify-center w-full p-2' > */}
       <div className='relative pt-[56%] h-full w-full overflow-hidden'>
-        {!displayUrl ? (
+        {!video.video_url ? (
             <p>Loading...</p>
         ) :
         (

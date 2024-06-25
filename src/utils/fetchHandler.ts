@@ -18,14 +18,13 @@ export const fetchHandler = async <T>(
   const requestOptions: RequestInit = {
     method: options.method || 'GET',
     headers:  {
-      'Accept':'application/json',
-      ...options.headers
-    }
+      'accept': 'application/json',
+      ...options.headers}
   }
 
   if (requestOptions.method !== 'GET') {
-    requestOptions.headers = {
-      'Content-Type':'application/json',
+    requestOptions.headers= {
+      'Content-Type':'Application/json',
       ...requestOptions.headers
     }
   }
@@ -36,8 +35,10 @@ export const fetchHandler = async <T>(
 
   const res = await fetch(`${BASE_URL}${endpoint}`, requestOptions);
   if (!res.ok) {
-    throw new Error(`HTTP error! Status: ${res.status}`);
+    //throw new Error(`HTTP error! Status: ${res.status}`);
+    return {status: res.status};
   }
-
-  return res.json();
+  const json = await res.json();
+  console.log('json', json)
+  return json;
 }

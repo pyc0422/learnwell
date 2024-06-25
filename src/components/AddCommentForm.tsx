@@ -1,26 +1,30 @@
 import { fetchHandler } from "@/utils/fetchHandler";
 import { useState, useEffect } from "react";
-
+import { useAppDispatch } from "@/store/store";
+import { addComment } from "@/store/commentSlice";
+import Swal from "sweetalert2";
 const restyledInput:string= 'dark:bg-dark-bg pb-0 font-light border-x-0 border-t-0 rounded-none shadow-none border-b-2 focus:border-b-black dark:focus:border-b-white focus:outline-none my-2 focus:ring-0'
 const AddCommentForm:React.FC<{video_id:string}> = ({video_id}) => {
   const [content, setContent] = useState<string>('');
   const [commenter, setCommenter] = useState<string>('')
   const [hiddenBtn, toggleBtn] = useState<boolean>(true);
-
+  const dispatch = useAppDispatch()
   const handleSubmit = async (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const body = {video_id, content, user_id:commenter}
     const res = await fetchHandler(`/comments`,
       {
         method:'POST',
-        body:{
-          video_id,
-          content,
-          user_id:commenter
-        }
+        body
       })
     if (res) {
-      alert(`add new comments! ${res.sucess}`)
+      dispatch(addComment({created_at:new Date().toString(), id:'', ...body}))
+      Swal.fire({
+        title:'New Comment Added',
+        icon:'success'
+      })
       setContent('')
+      setCommenter('')
     }
   }
 

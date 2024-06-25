@@ -3,9 +3,10 @@ import { useAppDispatch, useAppSelector } from "@/store/store";
 import { toggleModal } from "@/store/modalSlice";
 import Modal from "./Modal";
 import { fetchHandler } from "@/utils/fetchHandler";
-import { addVideo, updateVideo } from "@/store/videoSlice";
+import { addVideo, clearCurVideo, setCurVideo, updateVideo } from "@/store/videoSlice";
 import { getCookies, validateURL } from "@/utils/helpers";
-import { NewComments, NewVideo, Video } from "@/utils/types";
+import {  Video } from "@/utils/types";
+import Swal from "sweetalert2";
 const initialVideo:Video = {
   id:'',
   video_url:'',
@@ -18,8 +19,8 @@ const initialVideo:Video = {
 const AddVideoForm: React.FC<{video?:Video}>=({video}) => {
   const [inputs, setInputs] = useState<Video>(initialVideo)
   const dispatch = useAppDispatch();
-  const videoList = useAppSelector(state => state.video.videos);
   const userId= getCookies('userId');
+
   useEffect(() => {
     if (video) {
       setInputs(video)
@@ -29,7 +30,10 @@ const AddVideoForm: React.FC<{video?:Video}>=({video}) => {
     e.preventDefault();
     // check if url validate
     if(!validateURL(inputs.video_url)) {
-      alert('video url not right');
+      Swal.fire({
+        title:'Invalid Video URL',
+        icon:'error'
+      })
       return;
     }
     let body;
@@ -46,19 +50,21 @@ const AddVideoForm: React.FC<{video?:Video}>=({video}) => {
         dispatch(updateVideo(inputs))
       }
     } else {
-      body = { user_id: userId, ...inputs };
-
+      body = { user_id: userId, description:inputs.description, video_url: inputs.video_url, title:inputs.title};
+      console.log('add video body:', body)
       const res = await fetchHandler('', {method:'POST', body});
       if (res) {
-        console.log('res', res)
-        alert('add new video successfully');
+        Swal.fire({
+          title: 'Add new video successfully!',
+          icon:'success'
+        });
         //TODO: add the newest video to the list;
-        const newVideo:Video = { ...body, created_at:(new Date()).toDateString()};
+        const newVideo:Video = { ...inputs,user_id:userId, created_at:(new Date()).toDateString()};
         dispatch(addVideo(newVideo));
       }
     }
-    console.log('body', body)
     setInputs(initialVideo)
+    dispatch(clearCurVideo())
     dispatch(toggleModal(false))
   }
   const handleOnChange = (

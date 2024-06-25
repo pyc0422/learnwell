@@ -5,9 +5,7 @@ export const dynamic = 'force-dynamic';
 export async function GET(req: NextRequest) {
   const cookies = req.cookies;
   const userId = cookies.get('userId');
-  console.log('userId', userId?.value);
   try {
-
     const video = await fetchHandler(`?user_id=${userId?.value}`);
     console.log('v', video.videos.length);
     return Response.json(video);
@@ -16,3 +14,9 @@ export async function GET(req: NextRequest) {
     return Response.error()
   }
 }
+
+// export async function POST(req:NextRequest, res: Response) {
+//   try {
+//     const video = await fetchHandler('', {method:'POST'})
+//   }
+// }

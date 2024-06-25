@@ -30,9 +30,12 @@ const videoSlice = createSlice({
     },
     setCurVideo: (state, action: PayloadAction<Video>) => {
       state.curVideo = action.payload;
+    },
+    clearCurVideo: (state) => {
+      delete state.curVideo
     }
   },
 });
 
-export const {setVideos, addVideo, updateVideo, setCurVideo} = videoSlice.actions;
+export const {setVideos, addVideo, updateVideo, setCurVideo, clearCurVideo} = videoSlice.actions;
 export default videoSlice.reducer;

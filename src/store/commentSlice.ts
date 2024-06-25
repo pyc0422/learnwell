@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import { Comments, NewComments } from '@/utils/types';
-const initialState: {comments: Comments[] | NewComments[]} = {
+import { Comments } from '@/utils/types';
+const initialState: {comments: Comments[]} = {
   comments: []
 }
 
@@ -11,9 +11,9 @@ const commentSlice = createSlice({
     setComment: (state, action:PayloadAction<Comments[]>) => {
       state.comments = action.payload;
     },
-    addComment: (state, action:PayloadAction<NewComments>) => {
+    addComment: (state, action:PayloadAction<Comments>) => {
       const update = [...state.comments];
-      update.push(action.payload);
+      update.unshift(action.payload);
       state.comments = update;
     }
   },
