@@ -48,18 +48,10 @@ const VideoPage: React.FC<{params: {videoId: string}}> = ({params}) => {
     }
   }, [fullScreen])
 
-  // const changePlaybackRate = (rate: number) => {
-  //     setPlaybackRate(rate);
-  // };
-
-  // const changeVolume = (vol: number) => {
-  //   setVolume(vol);
-  // };
-
-  if (!video) return <Loading />;
+  if (!video) return <p>Loading...</p>;
 
   return (
-    <div className='m-2 p-2 flex flex-col items-center w-full md:w-4/5 md:mx-auto pb-16'>
+    <div className='m-2 p-2 flex flex-col md:items-center md:w-4/5 md:mx-auto pb-16'>
       <button className="bg-blue text-white my-2 py-1 w-full" onClick={() => toggleFullScreen(true)}>Watch Fullscreen</button>
       <div ref={divRef} className='w-full aspect-video card-hover hover:ring-4 rounded-lg'>
         <Suspense fallback={<p>Loading video...</p>} >

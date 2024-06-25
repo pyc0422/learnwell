@@ -29,7 +29,7 @@ const Home: React.FC = () => {
     <div className="md:w-[80%] md:mx-auto">
       <h1>
         Welcome <span className="text-green capitalize">{first} {last}</span> !</h1>
-      <div className="flex flex-wrap w-full justify-flex-start gap-5">
+      <div className="flex flex-wrap w-full justify-center md:justify-flex-start gap-5">
       {videos === null ? <Loading /> :
        (videos.length === 0 ? <h1>No video yet, upload first</h1>
           : videos.map(video => <VideoCard key={video.id} video={video} />))}
